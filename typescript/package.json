@@ -1,0 +1,17 @@
+{
+  "name": "aoc-2021",
+  "version": "1.0.0",
+  "description": "Advent of Code 2021",
+  "main": "src/index.ts",
+  "scripts": {
+    "start": "ts-node src/index.ts",
+    "test": "jest"
+  },
+  "author": "Albin Theander",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "@types/node": "^16.11.11",
+    "ts-node": "^10.4.0",
+    "typescript": "^4.5.2"
+  }
+}
