@@ -10,7 +10,7 @@ pub fn solve() {
     let p1 = navigate_simple(&commands);
     let p2 = navigate_with_aim(&commands);
 
-    println!("=====  Day 2  =====");
+    println!("\n=====  Day 2  =====");
     println!("The final position is {:?} with the product {}", p1, p1.0 * p1.1);
     println!("The final position with aim is {:?} with the product {}", p2, p2.0 * p2.1);
 }
