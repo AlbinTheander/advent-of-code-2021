@@ -4,6 +4,7 @@ import { day03 } from "./days/day03";
 import { day04 } from "./days/day04";
 import { day05 } from "./days/day05";
 import { day06 } from "./days/day06";
+import { day07 } from "./days/day07";
 
 function main() {
     // day01();
@@ -11,7 +12,8 @@ function main() {
     // day03();
     // day04();
     // day05();
-    day06();
+    // day06();
+    day07();
 }
 
 main()
