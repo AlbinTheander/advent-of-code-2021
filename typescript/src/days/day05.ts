@@ -12,7 +12,6 @@ export function day05() {
     const axisAlignedDuplications = part1(lines);
     const allDuplicates = part2(lines);
 
-    console.log('===== Day 5  =====');
     console.log('The number of duplicate points from the axis aligned lines is', axisAlignedDuplications);
     console.log('The total number of duplicate points is', allDuplicates);
 }

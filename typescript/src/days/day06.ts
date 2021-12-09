@@ -13,7 +13,6 @@ export function day06() {
     const after80 = part1(days);
     const after256 = part2(days);
 
-    console.log('===== Day 6  =====');
     console.log('The number of lantern fish after 80 days is', after80);
     console.log('The number of lantern fish after 256 days is', after256);
 }

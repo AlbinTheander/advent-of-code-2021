@@ -7,7 +7,6 @@ export function day03() {
 
     const a = part2(numbers);
 
-    console.log('===== Day 3  =====');
     console.log('The power consumption is ', gamma * epsilon);
     console.log('The life support rating is', o2 * co2);
 }

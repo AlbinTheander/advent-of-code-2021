@@ -1,23 +1,30 @@
-import { day01 } from "./days/day01"
-import { day02 } from "./days/day02";
-import { day03 } from "./days/day03";
-import { day04 } from "./days/day04";
-import { day05 } from "./days/day05";
-import { day06 } from "./days/day06";
-import { day07 } from "./days/day07";
-import { day08 } from "./days/day08";
-import { day09 } from "./days/day09";
-
-function main() {
-    day01();
-    day02();
-    day03();
-    day04();
-    day05();
-    day06();
-    day07();
-    day08();
-    day09();
-}
+import { readdirSync } from "fs";
 
 main()
+
+async function main() {
+    let dayFiles = readdirSync('./src/days', 'utf-8')
+        .filter(file => file.startsWith('day'))
+        .sort();
+    
+    const requestedDay = process.argv[2];
+    if (requestedDay) {
+        const day = requestedDay.length === 1 ? `day0${requestedDay}.ts` :
+                    requestedDay.length === 2 ? `day${requestedDay}.ts`  :
+                    requestedDay
+        dayFiles = [day];
+    }
+
+    for (const dayFile of dayFiles) {
+        const name = dayFile.split('.')[0];
+        const module = await import(`./days/${dayFile}`);
+        console.log('\n=====', prettyName(name), '=====');
+        module[name]();
+
+    }
+}
+
+function prettyName(name: string): string {
+    const num = +name.replace(/day0?/, '');
+    return 'Day ' + num + (num < 10 ? ' ': '');
+}

@@ -9,7 +9,7 @@ export function day02() {
     const cmds = getData();
     const p1 = run(cmds);
     const p2 = runWithAim(cmds);
-    console.log('===== Day 2 =====');
+    
     console.log(`The submarine ends up at ${p1.x},${p1.y} with the product`, p1.x * p1.y);
     console.log(`With aiming it ends up at ${p2.x},${p2.y} with the product`, p2.x * p2.y);
 }

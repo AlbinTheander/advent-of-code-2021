@@ -11,7 +11,6 @@ export function day08() {
     const answer1 = part1(problems);
     const answer2 = part2(problems);
 
-    console.log('===== Day 8  =====');
     console.log('The number of occurences of 1, 4, 7, and 8 is', answer1);
     console.log('Thu sum of all the numbers are', answer2);
 }

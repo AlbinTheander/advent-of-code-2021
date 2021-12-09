@@ -6,7 +6,6 @@ export function day04() {
     boards.forEach(b => b.reset());
     const losingScore = part2(boards, calls);
 
-    console.log('===== Day 4  =====')
     console.log('The winning score is', winningScore);
     console.log('The losing score is', losingScore);
 }

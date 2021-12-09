@@ -15,7 +15,6 @@ export function day01() {
     const windows = depths.slice(2).map((_, i) => depths[i] + depths[i+1] + depths[i+2]);
     const result2 = countIncreasing(windows);
 
-    console.log('===== Day 1  =====');
     console.log('The number of increasing depths are', result1);
     console.log('The number of increasing windows are', result2);
 }

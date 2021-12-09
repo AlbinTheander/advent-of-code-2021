@@ -5,7 +5,6 @@ export function day07() {
     const lowFuel = part1(crabs);
     const highFuel = part2(crabs);
 
-    console.log('===== Day 7  =====');
     console.log('The minimal fuel when fuel = distance is', lowFuel);
     console.log('With the real fuel consumption, they need', highFuel);
 }

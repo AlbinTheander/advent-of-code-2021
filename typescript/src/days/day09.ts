@@ -5,7 +5,6 @@ export function day09() {
     const risk = part1(depths);
     const sizeInfo = part2(depths);
 
-    console.log('===== Day 9  =====');
     console.log('The total risk of the sinks is', risk);
     console.log('The product of the 3 biggest areas is', sizeInfo);
 }
