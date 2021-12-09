@@ -35,19 +35,20 @@ function part2(problems: Problem[]): number {
     g: 7
 */
 function solve(digits: string[], target: string[]): number {
-    const ag = 'abcdefg'.split('');
+    const chars = 'abcdefg'.split('');
+    
     const one = digits.find(d => d.length === 2);
     const four = digits.find(d => d.length === 4);
     const seven = digits.find(d => d.length === 3);
     const eight = digits.find(d => d.length === 7);
 
-    const sA = ag.find(d => seven.includes(d) && !one.includes(d));
-    const sB = ag.find(ch => countIncludesChar(digits, ch) === 6);
-    const sC = ag.find(ch => ch !== sA && countIncludesChar(digits, ch) === 8);
-    const sD = ag.find(ch => four.includes(ch) && countIncludesChar(digits, ch) === 7);
-    const sE = ag.find(ch => countIncludesChar(digits, ch) === 4);
-    const sF = ag.find(ch => countIncludesChar(digits, ch) === 9);
-    const sG = ag.find(ch => !four.includes(ch) && countIncludesChar(digits, ch) === 7);
+    const sA = chars.find(ch => seven.includes(ch) && !one.includes(ch));
+    const sB = chars.find(ch => digitsIncludingChar(digits, ch) === 6);
+    const sC = chars.find(ch => ch !== sA && digitsIncludingChar(digits, ch) === 8);
+    const sD = chars.find(ch => four.includes(ch) && digitsIncludingChar(digits, ch) === 7);
+    const sE = chars.find(ch => digitsIncludingChar(digits, ch) === 4);
+    const sF = chars.find(ch => digitsIncludingChar(digits, ch) === 9);
+    const sG = chars.find(ch => !four.includes(ch) && digitsIncludingChar(digits, ch) === 7);
 
     const zero = [sA, sB, sC, sE, sF, sG].sort().join('');
     const two = [sA, sC, sD, sE, sG].sort().join('');
@@ -62,7 +63,7 @@ function solve(digits: string[], target: string[]): number {
     return +t;
 }
 
-function countIncludesChar(s: string[], ch: string): number {
+function digitsIncludingChar(s: string[], ch: string): number {
     return s.filter(x1 => x1.includes(ch)).length;
 }
 

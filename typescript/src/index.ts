@@ -6,6 +6,7 @@ import { day05 } from "./days/day05";
 import { day06 } from "./days/day06";
 import { day07 } from "./days/day07";
 import { day08 } from "./days/day08";
+import { day09 } from "./days/day09";
 
 function main() {
     // day01();
@@ -15,7 +16,8 @@ function main() {
     // day05();
     // day06();
     // day07();
-    day08();
+    // day08();
+    day09();
 }
 
 main()

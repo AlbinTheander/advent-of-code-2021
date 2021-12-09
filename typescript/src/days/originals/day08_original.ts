@@ -24,6 +24,7 @@ g: 7
 
 function solve(digits: string[], target: string[]) {
     const ag = 'abcdefg'.split('');
+
     const one = digits.find(d => d.length === 2);
     const four = digits.find(d => d.length === 4);
     const seven = digits.find(d => d.length === 3);
@@ -47,7 +48,6 @@ function solve(digits: string[], target: string[]) {
     const digs = [zero, one, two, three, four, five, six, seven, eight, nine];
 
     const t = target.map(d => digs.indexOf(d)).join('');
-    console.log(t);
     return +t;
 }
 
