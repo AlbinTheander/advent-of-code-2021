@@ -43,5 +43,4 @@ function part2(crabs) {
 
 function getData(): number[] {
     return readFileSync('../data/day07.txt', 'utf-8').split(',').map(Number);
-    // return readFileSync('./test.txt', 'utf-8').split(',').map(Number);
 }
