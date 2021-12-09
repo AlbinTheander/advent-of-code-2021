@@ -1,32 +1,43 @@
 import { readFileSync } from "fs";
 
+/*
+* The "days" data is an array where entry n represents how many
+* fish are n days away from creating a new lantern fish.
+* so if fish[4] === 38, there are 38 fish that will spawn a new
+* fish in 4 days.
+*/
+
 export function day06() {
-    let fish = getData();
-    fish = [6];
-    for(let i = 0; i < 80; i++) {
-        fish = tick(fish);
-    }
-    
-    fish = getData();
-    let days = [];
-    for(let i = 0; i <= 8; i++) {
-        days[i] = fish.filter(f => f === i).length;
-    }
+    let days = getData();
 
-    for(let i = 0; i < 256; i++) {
-        days = tick2(days);
-    }
-    const sum = days.reduce((a, b) => a+b, 0);
-    console.log(sum, days);
+    const after80 = part1(days);
+    const after256 = part2(days);
+
+    console.log('===== Day 6  =====');
+    console.log('The number of lantern fish after 80 days is', after80);
+    console.log('The number of lantern fish after 256 days is', after256);
 }
 
-function tick(fish: number[]): number[] {
-    return fish.flatMap(f => {
-        return f === 0 ? [6, 8] : [f-1];
-    });
+function part1(days: number[]): number {
+    return evolve(days, 80);
 }
 
-function tick2(days: number[]): number[] {
+function part2(days: number[]): number {
+    return evolve(days, 256);
+}
+
+function evolve(days: number[], ticks: number): number {
+    let ds = days;
+    for (let t = 0; t < ticks; t++) {
+        ds = tick(ds);
+    }
+
+    const sum = ds.reduce((a, b) => a + b, 0);
+    return sum;
+}
+
+
+function tick(days: number[]): number[] {
     const newDays = [];
     newDays[0] = days[1];
     newDays[1] = days[2];
@@ -42,6 +53,10 @@ function tick2(days: number[]): number[] {
 }
 
 function getData(): number[] {
-    return readFileSync('../data/day06.txt', 'utf-8').split(',').map(Number);
-    // return readFileSync('./test.txt', 'utf-8').split(',').map(Number);
+    const fish = readFileSync('../data/day06.txt', 'utf-8').split(',').map(Number);
+    let days = [];
+    for(let i = 0; i <= 8; i++) {
+        days[i] = fish.filter(f => f === i).length;
+    }
+    return days;
 }

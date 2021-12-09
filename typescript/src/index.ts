@@ -9,14 +9,14 @@ import { day08 } from "./days/day08";
 import { day09 } from "./days/day09";
 
 function main() {
-    // day01();
-    // day02();
-    // day03();
-    // day04();
-    // day05();
-    // day06();
+    day01();
+    day02();
+    day03();
+    day04();
+    day05();
+    day06();
     // day07();
-    // day08();
+    day08();
     day09();
 }
 
