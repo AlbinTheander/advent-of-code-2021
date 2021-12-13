@@ -2,31 +2,16 @@ import { readFileSync } from "fs";
 
 export function day10() {
     const lines = getData();
+    const total = lines.reduce((sum, line) => sum + score(line), 0);
+    console.log('Total', total);
 
-    const answer1 = part1(lines);
-    const answer2 = part2(lines);
+    const inclompeteScores = lines.filter(line => score(line) === 0).map(completionScore).sort((a, b) => a-b);
+    console.log(inclompeteScores);
+    console.log('Middle score', inclompeteScores[inclompeteScores.length >> 1]);
 
-    console.log('The total syntax error score is', answer1);
-    console.log('The middle completion score is ', answer2);
 }
 
-function part1(lines: string[]): number {
-    return lines
-        .map(corruptionScore)
-        .reduce((a, b) => a + b, 0);
-}
-
-function part2(lines: string[]): number {
-    const nonCorruptedLines = lines.filter(line => corruptionScore(line) === 0);
-
-    const scores = nonCorruptedLines
-        .map(completionScore)
-        .sort((a, b) => a - b)
-
-    return scores[scores.length >> 1];
-}
-
-function corruptionScore(line: string): number {
+function score(line: string): number {
     let s = line;
     let oldLength = 0;
     while (oldLength !== s.length) {
@@ -52,5 +37,6 @@ function completionScore(line: string): number {
 
 
 function getData(): string[] {
+    // return readFileSync('./test.txt', 'utf-8').split('\n');
     return readFileSync('../data/day10.txt', 'utf-8').split('\n');
 }
