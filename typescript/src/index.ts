@@ -1,27 +1,35 @@
-import { readdirSync } from "fs";
+import { readdirSync, readFileSync } from "fs";
 
 main()
 
 async function main() {
+    const requestedDay = process.argv[2];
     let dayFiles = readdirSync('./src/days', 'utf-8')
         .filter(file => file.startsWith('day'))
         .sort();
     
-    const requestedDay = process.argv[2];
     if (requestedDay) {
-        const day = requestedDay.length === 1 ? `day0${requestedDay}.ts` :
-                    requestedDay.length === 2 ? `day${requestedDay}.ts`  :
-                    requestedDay
-        dayFiles = [day];
+        runOneDay(requestedDay);
+    } else {
+        for (const dayFile of dayFiles) {
+            await runOneDay(dayFile);
+        }
     }
 
-    for (const dayFile of dayFiles) {
-        const name = dayFile.split('.')[0];
-        const module = await import(`./days/${dayFile}`);
-        console.log('\n=====', prettyName(name), '=====');
-        module[name]();
+}
 
-    }
+async function runOneDay(day: string, data?: string) {
+    const fileName = day.length === 1 ? `day0${day}.ts` :
+                     day.length === 2 ? `day${day}.ts`  :
+                     day;
+    const name = fileName.split('.')[0];
+    const module = await import(`./days/${fileName}`);
+
+    const dataFile = data || `../data/${name}.txt`;
+    const rawData = readFileSync(dataFile, 'utf-8');
+
+    console.log('\n=====', prettyName(name), '=====');
+    module[name](rawData);
 }
 
 function prettyName(name: string): string {
