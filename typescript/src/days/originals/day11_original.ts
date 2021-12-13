@@ -1,30 +1,28 @@
 import { readFileSync } from "fs";
 
 export function day11() {
-    const answer1 = part1(getData());
-    const answer2 = part2(getData());
+    const grid = getData();
+    let exp = 0;
+    for(let i = 0; i <100; i++) {
+        exp += evolve(grid);
+    }
+    console.log(toS(grid));
+    console.log(exp);
 
-    console.log('The first step will result in', answer1, 'flashes');
-    console.log('All the octupii will flash in round ', answer2);
-}
-
-function part1(grid: number[][]): number {
-    let count = 0;
-    for (let i = 0; i < 100; i++) 
-        count += evolve(grid);
-
-    return count;
-}
-
-function part2(grid: number[][]): number {
+    const grid2 = getData();
     let round = 0;
     while(true) {
         round++;
-        const es = evolve(grid);
+        const es = evolve(grid2);
         if (es === 100) {
-            return round;
+            console.log('Round', round);
+            return;
         }
     }
+}
+
+function toS(grid: number[][]): string {
+    return grid.map(line => line.join(',')).join('\n');
 }
 
 function evolve(grid: number[][]): number {
@@ -66,6 +64,7 @@ function contains(grid: number[][], x: number, y: number): boolean {
 
 function getData(): number[][] {
     return readFileSync('../data/day11.txt', 'utf-8')
+    // return readFileSync('./test.txt', 'utf-8')
         .split('\n')
         .map(line => line.split('').map(Number));
 }
