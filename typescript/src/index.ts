@@ -9,7 +9,8 @@ async function main() {
         .sort();
     
     if (requestedDay) {
-        runOneDay(requestedDay);
+        const data = process.argv[3];
+        runOneDay(requestedDay, data);
     } else {
         for (const dayFile of dayFiles) {
             await runOneDay(dayFile);
