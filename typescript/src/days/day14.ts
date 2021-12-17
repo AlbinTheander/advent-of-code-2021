@@ -2,82 +2,48 @@ type Rules = Record<string, string>;
 
 export function day14(input: string) {
   const { template, rules } = getData(input);
-  part1(template, rules);
-  part2(template, rules);
+
+  const answer1 = part1(template, rules);
+  const answer2 = part2(template, rules);
+
+  console.log('After 10 steps, the score is', answer1);
+  console.log('After 40 steps, the score is', answer2);
 }
 
 function part1(template: string, rules: Rules) {
-  let result = template;
-  for (let i = 0; i < 10; i++) result = evolve(result, rules);
-  console.log(result.length);
+  let counter = createCounter(template);
+  for(let i = 0; i < 10; i++) {
+    counter = counter.evolve(rules);
+  }
 
-  const counts: Record<string, number> = {};
-  for (const ch of result) counts[ch] = (counts[ch] || 0) + 1;
-  console.log(counts);
-  const max = Math.max(...Object.values(counts));
-  const min = Math.min(...Object.values(counts));
-  console.log(max - min);
+  return scoreCounter(counter);
 }
 
 function part2(template: string, rules: Rules) {
-  console.log(countAll('K', template, rules));
-  console.log(5200758808457 - 829450972300);
-  return ;
-  const chars = [...template].filter((ch, n) => template.indexOf(ch) === n);
-  const counts = chars.map(ch => countAll(ch, template, rules));
-  const min = Math.min(...counts);
-  const max = Math.max(...counts);
-  console.log(chars, counts, max, min, max-min);
+  let counter = createCounter(template);
+  for(let i = 0; i < 40; i++) {
+    counter = counter.evolve(rules);
+  }
+
+  return scoreCounter(counter);
 }
 
-const cache: Record<string, number> = {};
+function createCounter(template: string) {
+  let counter = new Counter();
 
-function countAll(target: string, template: string, rules: Rules): number {
-  let total = 0;
-  for (let i = 0; i < template.length - 1; i++) {
-    const ch1 = template[i];
-    const ch2 = template[i + 1];
-    total += count(target, 40, ch1, ch2, rules);
-    console.log(ch1, ch2, count(target, 1, ch1, ch2, rules));
-    if (ch2 === target) total++;
+  for(let i = 0; i < template.length - 1; i++) {
+    const genome = template.slice(i, i+2);
+    counter.add(genome, 1);
   }
-  if (template[0] === target) total++;
-  return total;
+
+  return counter;
 }
 
-function count(
-  target: string,
-  iterations: number,
-  ch1: string,
-  ch2: string,
-  rules: Rules
-): number {
-  const cacheKey = target + ch1 + ch2 + iterations;
-  if (cache[cacheKey]) {
-    return cache[cacheKey];
-  }
-
-  if (iterations === 0) {
-    return 0;
-  }
-  const next = rules[ch1 + ch2];
-  let total =
-    count(target, iterations - 1, ch1, next, rules) +
-    count(target, iterations - 1, next, ch2, rules);
-  if (next === target) total++;
-
-  cache[cacheKey] = total;
-  return total;
-}
-
-function evolve(template: string, rules: Rules): string {
-  const result = [];
-  for (let i = 0; i < template.length - 1; i++) {
-    result.push(template[i]);
-    result.push(rules[template.slice(i, i + 2)]);
-  }
-  result.push(template.slice(-1));
-  return result.join("");
+function scoreCounter(counter: Counter): number {
+  const counts = counter.countIt();
+  const max = Math.ceil(Math.max(...counts.data.values()) / 2);
+  const min = Math.ceil(Math.min(...counts.data.values()) / 2);
+  return max - min;
 }
 
 function getData(input: string): { template: string; rules: Rules } {
@@ -91,4 +57,34 @@ function getData(input: string): { template: string; rules: Rules } {
   });
 
   return { template, rules };
+}
+
+class Counter {
+  data = new Map<string, number>();
+
+  add(key: string, count: number) {
+    const val = this.data.get(key) || 0;
+    this.data.set(key, val + count);
+  }
+
+  evolve(rules: Rules) {
+    const newCounter = new Counter();
+    this.data.forEach((count: number, genome: string) => {
+      const ch = rules[genome];
+      const g1 = genome[0] + ch;
+      const g2 = ch + genome[1];
+      newCounter.add(g1, count);
+      newCounter.add(g2, count);
+    });
+    return newCounter;
+  }
+
+  countIt() {
+    const newCounter = new Counter();
+    this.data.forEach((count: number, genome: string) => {
+      newCounter.add(genome[0], count);
+      newCounter.add(genome[1], count);
+    })
+    return newCounter;
+  }
 }
