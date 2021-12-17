@@ -1,23 +1,19 @@
 export function day16(input: string) {
     const bitStream = new BitStream(input);
-    const { versionSum, result } = parts(bitStream);
-
-    console.log('The sum of all the versions is', versionSum);
-    console.log('The value of the whole expression is', result);
+    part1(bitStream);
 }
 
-function parts(bits: BitStream): { versionSum: any; result: number; } {
+function part1(bits: BitStream) {
     const versions = [];
 
     function readComponent(): number {
         if (!bits.hasMore()) return;
-
         const version = bits.read(3);
         const typeId = bits.read(3);
+        console.log(version, typeId);
         versions.push(version);
 
         if (typeId === 4) {
-            // Literal
             let value = 0;
             let done = false;
             while (!done) {
@@ -26,8 +22,8 @@ function parts(bits: BitStream): { versionSum: any; result: number; } {
             }
             return value;
         } else {
-            // Op
             const lengthId = bits.read(1);
+            console.log('Op', lengthId);
             const values = [];
             if (lengthId === 0) {
                 const length = bits.read(15);
@@ -46,12 +42,14 @@ function parts(bits: BitStream): { versionSum: any; result: number; } {
     }
 
     const result = readComponent();
-    const versionSum = versions.reduce((a, b) => a+ b, 0);
-
-    return { versionSum, result };
+    console.log(versions);
+    const sum = versions.reduce((a, b) => a+ b, 0);
+    console.log(sum);
+    console.log(result);
 }
 
 function evalComponent(typeId: number, values: number[]): number {
+    console.log('eval', typeId, values);
     switch(typeId) {
         case 0: return values.reduce((a, b) => a + b, 0);
         case 1: return values.reduce((a, b) => a * b, 1);
@@ -78,6 +76,7 @@ class BitStream {
 
     read(nrOfBits: number): number {
         const s = this.bits.slice(this.pos, this.pos + nrOfBits);
+        console.log('Reading', nrOfBits, 'at', this.pos, s);
         this.pos += nrOfBits;
         return Number.parseInt(s, 2);
     }
