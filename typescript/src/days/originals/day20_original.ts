@@ -1,40 +1,26 @@
 export function day20(input: string) {
-    const { grid, replacements } = parseInput(input);
+    const { replacements, grid } = parseInput(input);
 
-    const answer1 = part1(grid, replacements);
-    const answer2 = part2(grid, replacements);
-
-    console.log('After two iterations, the number of lights is', answer1);
-    console.log('After 50 iterations, the number of lights is', answer2);
-
-}
-
-function part1(grid: InfiniGrid, replacements: string): number {
-    const g = evolve(evolve(grid, replacements), replacements);
-
-    return [...g.data.values()].filter(ch => ch).length;
-}
-
-function part2(grid: InfiniGrid, replacements: string): number {
     let g = grid;
     for(let i = 0; i < 50; i++) {
         g = evolve(g, replacements);
     }
-    return [...g.data.values()].filter(ch => ch).length;
+
+    console.log([...g.data.values()].filter(ch => ch).length);
+
 }
 
+const S3x3 = [[-1, -1], [0, -1], [1, -1], [-1, 0], [0, 0], [1, 0], [-1, 1], [0, 1], [1, 1]];
 function evolve(grid: InfiniGrid, replacements: string): InfiniGrid {
-    const S3x3 = [[-1, -1], [0, -1], [1, -1], [-1, 0], [0, 0], [1, 0], [-1, 1], [0, 1], [1, 1]];
-    const getBit = (g: InfiniGrid, x: number, y: number): number => g.isOn(x, y) ? 1 : 0;
-    const getCode = (g: InfiniGrid, x: number, y: number): number => 
-        S3x3.reduce((result, [dx, dy]) => result * 2 + getBit(g, x+dx, y+dy), 0);
+    const getBit = (g, x, y) => g.isOn(x, y) ? 1 : 0;
+    const getCode = (g, x, y) => S3x3.map(([dx, dy]) => getBit(g, x+dx, y+dy)).join('');
 
     const newGrid = new InfiniGrid(!grid.defaultOn && replacements[0] === '#');
 
     for (let y = grid.minY - 1; y <= grid.maxY + 1; y++) {
         for (let x = grid.minX-1; x <= grid.maxX+1; x++) {
             const code = getCode(grid, x, y);
-            const newCh = replacements[code];
+            const newCh = replacements[Number.parseInt(code, 2)];
             newGrid.set(x, y, newCh === '#');
         }
     }
